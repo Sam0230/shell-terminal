@@ -1,0 +1,16 @@
+# add custom paths
+
+# PATH="/opt/homebrew/share/android-ndk/toolchains/aarch64-linux-android-4.9/prebuilt/darwin-x86_64/bin:$PATH"
+# PATH="/opt/homebrew/share/android-ndk/toolchains/llvm/prebuilt/darwin-x86_64/bin:$PATH"
+# PATH="/Applications/VMware Fusion.app/Contents/Library:$PATH"
+# PATH="$HOME/Documents/node/bin:$PATH"
+# PATH="$HOME/.miniconda3/bin:$PATH"
+# PATH="/opt/depot_tools:$PATH"
+# for i in /opt/*; do
+# 	addPATH "$i"
+# 	addMANPATH "$i"
+# 	addINFOPATH "$i"
+# 	addLDFLAGS "$i"
+# 	addCFLAGS "$i"
+# 	addPKG_CONFIG_PATH "$i"
+# done

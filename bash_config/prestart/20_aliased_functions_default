@@ -1,0 +1,55 @@
+addPATH() {
+	# PATH="$1${PATH+:$PATH}"
+	if [ -d "$1/bin" ]; then
+		export PATH="$1/bin${PATH+:$PATH}"
+	fi
+	if [ -d "$1/sbin" ]; then
+		export PATH="$1/sbin${PATH+:$PATH}"
+	fi
+	if [ -d "$1/libexec/gnubin" -a "$2" == "1" ]; then
+		PATH="$1/libexec/gnubin${PATH+:$PATH}"
+	fi
+}
+
+addLDFLAGS() {
+	# LDFLAGS="$1 $LDFLAGS"
+	if [ -d "$1/lib" ]; then
+		export LDFLAGS="-L$1/lib $LDFLAGS"
+	fi
+}
+
+addCFLAGS() {
+	# CFLAGS="$1 $CFLAGS"
+	# CPPFLAGS="$1 $CPPFLAGS"
+	# CXXFLAGS="$1 $CXXFLAGS"
+	if [ -d "$1/include" ]; then
+		export CFLAGS="-I$1/include $CFLAGS"
+		export CPPFLAGS="-I$1/include $CPPFLAGS"
+		export CXXFLAGS="-I$1/include $CXXFLAGS"
+	fi
+}
+
+addPKG_CONFIG_PATH() {
+	# PKG_CONFIG_PATH="$1${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
+	if [ -d "$1/lib/pkgconfig" ]; then
+		export PKG_CONFIG_PATH="$1/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
+	fi
+}
+
+addMANPATH() {
+	if [ -d "$1/share/man" ]; then
+		export MANPATH="$1/share/man${MANPATH+:$MANPATH}"
+	fi
+	if [ -d "$1/libexec/gnuman" -a "$2" == "1" ]; then
+		export MANPATH="$1/libexec/gnuman${MANPATH+:$MANPATH}"
+	fi
+}
+
+addINFOPATH() {
+	if [ -d "$1/share/info" ]; then
+		export INFOPATH="$1/share/info${INFOPATH+:$INFOPATH}"
+	fi
+	if [ -d "$1/libexec/gnuinfo" -a "$2" == "1" ]; then
+		export INFOPATH="$1/libexec/gnuinfo${INFOPATH+:$INFOPATH}"
+	fi
+}

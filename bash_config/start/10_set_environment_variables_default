@@ -1,0 +1,5 @@
+# set environment variables
+
+BASH_HISTORY_LENGTH=2100000000
+BASH_HISTORY_FILE_SIZE=2100000000
+force_color_prompt=yes

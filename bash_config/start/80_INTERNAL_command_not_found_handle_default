@@ -1,0 +1,25 @@
+# (INTERNAL) command not found handle - use ../interact/80_command_not_found_handle_default instead
+
+display_command_not_found() {
+	echo "$0: $1: command not found" >&2
+	return 127
+}
+command_not_found_handles=(display_command_not_found)
+command_not_found_handle() {
+	if test ! -t 1; then
+		# do nohing if stdout is piped
+		display_command_not_found "$1"
+		return 127
+	fi
+	for i in "${command_not_found_handles[@]}"; do
+		"$i" "$1"
+		local ret=$?
+		if [ "$ret" != "127" ]; then
+			return $ret
+		fi
+	done
+	return 127
+}
+add_command_not_found_handle() {
+	command_not_found_handles[${#command_not_found_handles[@]}]="$1"
+}

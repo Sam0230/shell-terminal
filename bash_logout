@@ -1,0 +1,1 @@
+___BASHCFG_LOGOUT___

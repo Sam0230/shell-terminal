@@ -1,0 +1,23 @@
+# command not found handle
+
+# example 1 (archlinux)
+# search_command() {
+#	results=("$(pacman -F "/usr/bin/$1")" "$(pacman -F "/usr/local/bin/$1")" "$(pacman -F "/usr/local/sbin/$1")")
+#	if [ "${results[*]}" == "  " ]; then
+#		echo "And there's no package providing the command $1"
+#		return 127
+#	fi
+#	echo "And these package(s) provide(s) the command $1: "
+#	for i in "${results[@]}"; do
+#		i="${i##* is owned by }"
+#		i="${i% *}"
+#		echo -n "$i "
+#	done
+#	echo
+#	return 127
+# }
+# add_command_not_found_handle search_command
+
+# example 2 (npm)
+# eval "$(npx --shell-auto-fallback bash | sed 's/command_not_found_handle/npx_search_command/')"
+# add_command_not_found_handle npx_search_command

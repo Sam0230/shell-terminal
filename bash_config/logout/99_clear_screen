@@ -1,0 +1,7 @@
+# when leaving the console clear the screen to increase privacy
+
+if [ "$SHLVL" = 1 ]; then
+	[ -x /usr/bin/clear_console ] && /usr/bin/clear_console -q
+	[ -x "$(which clear)" ] && "$(which clear)"
+	printf '\33c\e[3J'
+fi

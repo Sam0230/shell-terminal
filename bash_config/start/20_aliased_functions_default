@@ -1,0 +1,56 @@
+# aliases
+
+# alias npm="npx npm"
+# alias npm="npm --registry=https://registry.npm.taobao.org"
+# export _bare_proxy_0=127.0.0.1:45678
+# export _bare_proxy_0_t=http
+# alias setproxy="export http_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export https_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export ftp_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export telnet_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export socks_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export HTTP_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export HTTPS_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export FTP_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export TELNET_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export SOCKS_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export _bare_proxy=$_bare_proxy_0"
+# alias usetproxy="unset http_proxy; unset https_proxy; unset ftp_proxy; unset telnet_proxy; unset socks_proxy; unset HTTP_PROXY; unset HTTPS_PROXY; unset FTP_PROXY; unset TELNET_PROXY; unset SOCKS_PROXY; unset _bare_proxyAAA"
+# alias aria2cf='aria2c --dht-file-path=$HOME/.aria2/dht.dat -x 8 -s 256 -k 1M --file-allocation=falloc'
+# alias aria2cd='aria2c --dht-file-path=$HOME/.aria2/dht.dat --conf-path=/Users/sam0230/.aria2/aria2cd.conf'
+# alias aria2c='aria2c --dht-file-path=$HOME/.aria2/dht.dat --file-allocation=falloc'
+# alias aria2ci='aria2c --dht-file-path=$HOME/.aria2/dht.dat -x 1024 -s 8192 -k 1M --file-allocation=falloc'
+# alias kcptun_client='~/Documents/kcptun_client'
+# alias zip2john="~/Documents/john-1.8.0.9-jumbo-macosx_sse4/run/zip2john"
+# alias rar2john="~/Documents/john-1.8.0.9-jumbo-macosx_sse4/run/rar2john"
+# alias john="~/Documents/john-1.8.0.9-jumbo-macosx_sse4/run/john"
+# alias linux="docker exec -it ArchLinux su sam0230"
+# alias startlinux="~/Documents/docker-linux/startlinux"
+# alias linux="~/Documents/docker-linux/linux"
+# alias pkg-uninstall="bash ~/Documents/pkg-uninstall.sh"
+# alias vscode="open -a 'Visual Studio Code'"
+# alias vscode="open -a 'Visual Studio Code'"
+# alias quarantine="codesign --verify --verbose --all-architectures --deep --"
+# alias cp="cp -c"
+# alias clear="echo -ne '\033c\033[3J'"
+# alias subtitleedit='WINEPREFIX=${HOME}/.wine wine64 "$HOME/Documents/SE361/SubtitleEdit.exe"'
+# trust() {
+# 	local recursively=0
+# 	local args=("$@")
+# 	for i in $(eval "echo {0..$[${#args[@]}-1]}"); do
+# 		if [ "${args[$i]}" == "-r" ]; then
+# 			recursively=1
+# 			unset args[$i]
+# 		fi
+# 	done
+# 	if [ "$recursively" == "1" ]; then
+# 		xattr -r -d com.apple.quarantine "${args[@]}"
+# 	else
+# 		xattr -d com.apple.quarantine "${args[@]}"
+# 	fi
+# }
+# alias aria2c1='aria2c -x 64 -s 256 -k 512k --piece-length=64k "$@"'
+# resetPerm() {
+# 	sudo /bin/chmod -R -N "$@"
+# 	sudo /usr/sbin/chown -h -R sam0230:sam0230 "$@"
+# 	sudo /bin/chmod -R u+r,u+w,go= "$@"
+# 	sudo find "$@" -type d -exec /bin/chmod -h u+x \{\} \;
+# 	sudo find "$@" -type l -exec /bin/chmod -h u+r,u+w,go= \{\} \;
+# }
+# resetPATH() {
+# 	PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin"
+# }
+# resetEnv() {
+# 	resetPATH
+# 	unset PKG_CONFIG_PATH MANPATH CXXFLAGS LDFLAGS CPPFLAGS INFOPATH CFLAGS
+# }
