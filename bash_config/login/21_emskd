@@ -1,0 +1,6 @@
+# PATH="/Users/sam0230/Documents/emsdk-master:$PATH"
+# PATH="/Users/sam0230/Documents/emsdk-master/upstream/emscripten:$PATH"
+# EMSDK=/Users/sam0230/Documents/emsdk-master
+# EM_CONFIG=/Users/sam0230/Documents/emsdk-master/.emscripten
+# EM_CACHE=/Users/sam0230/Documents/emsdk-master/upstream/emscripten/cache
+# #source "/Users/sam0230/Documents/emsdk-master/emsdk_env.sh" >/dev/null 2>/dev/null

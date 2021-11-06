@@ -1,7 +1,7 @@
 # set environment variables
 
 if [ "$PKG_CONFIG_PATH" == "" ]; then
-	export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig${PATH+:$PATH}"
+	export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/lib/pkgconfig${PKG_CONFIG_PATH+:$PKG_CONFIG_PATH}"
 fi
 if [ "$MANPATH" == "" ]; then
 	export MANPATH="/usr/local/share/man:/usr/share/man${MANPATH+:$MANPATH}"
@@ -9,15 +9,15 @@ fi
 if [ "$INFOPATH" == "" ]; then
 	export INFOPATH="/usr/local/share/info:/usr/share/info${INFOPATH+:$INFOPATH}"
 fi
-# export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
-# export ANDROID_NDK_HOME="/opt/homebrew/share/android-ndk"
+export ANDROID_NDK_HOME="/opt/homebrew/share/android-ndk"
 export BASH_SILENCE_DEPRECATION_WARNING=1 # bash on macOS
-# export VSCODE_GALLERY_SERVICE_URL='https://marketplace.visualstudio.com/_apis/public/gallery'
-# export VSCODE_GALLERY_CACHE_URL='https://vscode.blob.core.windows.net/gallery/index'
-# export VSCODE_GALLERY_ITEM_URL='https://marketplace.visualstudio.com/items'
-# export VSCODE_GALLERY_CONTROL_URL=''
-# export VSCODE_GALLERY_RECOMMENDATIONS_URL=''
-# export USE_CCACHE=1
-# export CCACHE_EXEC="$(which ccache)"
-# export WINEDEBUG=-all
+export VSCODE_GALLERY_SERVICE_URL='https://marketplace.visualstudio.com/_apis/public/gallery'
+export VSCODE_GALLERY_CACHE_URL='https://vscode.blob.core.windows.net/gallery/index'
+export VSCODE_GALLERY_ITEM_URL='https://marketplace.visualstudio.com/items'
+export VSCODE_GALLERY_CONTROL_URL=''
+export VSCODE_GALLERY_RECOMMENDATIONS_URL=''
+export USE_CCACHE=1
+export CCACHE_EXEC="$(which ccache)"
+export CCACHE_DIR=/Volumes/ccache
+export WINEDEBUG=-all
 export HISTTIMEFORMAT="%u %m/%d/%Y %H:%M:%S GMT%z "

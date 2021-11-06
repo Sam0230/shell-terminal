@@ -53,3 +53,9 @@ addINFOPATH() {
 		export INFOPATH="$1/libexec/gnuinfo${INFOPATH+:$INFOPATH}"
 	fi
 }
+declare -A __trap_list
+declare -A __external_trap
+#WIPaddtrap() {
+#WIP	if [[ "$1" != *" "* || "$1" || ( " 0) EXIT $(trap -l) DEBUG RETURN " != *" $i "* && " 0) EXIT $(trap -l) DEBUG RETURN " != *" ($i "* ) ]]; then
+#WIP	__trap_list
+#WIP}

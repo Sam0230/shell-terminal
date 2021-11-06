@@ -42,6 +42,7 @@ ___BASHCFG_INIT___() {
 			"___BASHCFG_CFG_FN___"
 			unset "___BASHCFG_CFG_FN___"
 		done
+		[ "$___BASHCFG_LOGOUT___" == "1" ] && ___BASHCFG_LOGOUT___
 	' exit
 	if [ "$___BASHCFG_INTERACT_SHELL___" == "yes" ]; then
 		[ "$(env ls ~/.bash_config/interact)" != "" ] && for i in ~/.bash_config/interact/*; do

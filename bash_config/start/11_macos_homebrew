@@ -1,0 +1,7 @@
+if [ "$(uname -s)" == "Darwin" ]; then
+
+if [ -f /opt/homebrew/etc/profile.d/bash_completion.sh -a "$___BASHCFG_INTERACT_SHELL___" == yes ] && ! shopt -oq posix; then
+	. /opt/homebrew/etc/profile.d/bash_completion.sh
+fi
+
+fi

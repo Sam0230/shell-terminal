@@ -7,7 +7,6 @@ display_command_not_found() {
 command_not_found_handles=(display_command_not_found)
 command_not_found_handle() {
 	if test ! -t 1; then
-		# do nohing if stdout is piped
 		display_command_not_found "$1"
 		return 127
 	fi

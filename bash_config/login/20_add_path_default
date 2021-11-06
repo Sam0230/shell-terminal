@@ -6,11 +6,11 @@
 # PATH="$HOME/Documents/node/bin:$PATH"
 # PATH="$HOME/.miniconda3/bin:$PATH"
 # PATH="/opt/depot_tools:$PATH"
-# for i in /opt/*; do
-# 	addPATH "$i"
-# 	addMANPATH "$i"
-# 	addINFOPATH "$i"
-# 	addLDFLAGS "$i"
-# 	addCFLAGS "$i"
-# 	addPKG_CONFIG_PATH "$i"
-# done
+for i in /opt/*; do
+	addPATH "$i"
+	addMANPATH "$i"
+	addINFOPATH "$i"
+	addLDFLAGS "$i"
+	addCFLAGS "$i"
+	addPKG_CONFIG_PATH "$i"
+done
