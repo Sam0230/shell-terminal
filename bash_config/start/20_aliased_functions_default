@@ -51,7 +51,7 @@
 # alias aria2c1='aria2c -x 64 -s 256 -k 512k --piece-length=64k "$@"'
 # resetPerm() {
 # 	sudo /bin/chmod -R -N "$@"
-# 	sudo /usr/sbin/chown -h -R sam0230:sam0230 "$@"
+# 	sudo /usr/sbin/chown -h -R "$(id -ur):$(id -gr)" "$@"
 # 	sudo /bin/chmod -R u+r,u+w,go= "$@"
 # 	sudo find "$@" -type d -exec /bin/chmod -h u+x \{\} \;
 # 	sudo find "$@" -type l -exec /bin/chmod -h u+r,u+w,go= \{\} \;
