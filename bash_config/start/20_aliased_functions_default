@@ -4,7 +4,7 @@
 # alias sbrew="/opt/homebrew/sbrew"
 # export _bare_proxy_0=127.0.0.1:45678
 # export _bare_proxy_0_t=http
-# alias setproxy="export http_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export https_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export ftp_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export telnet_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export all_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export HTTP_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export HTTPS_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export FTP_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export TELNET_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export ALL_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export _bare_proxy=$_bare_proxy_0"
+# alias setproxy='export http_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export https_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export ftp_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export telnet_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export all_proxy=$_bare_proxy_0_t://$_bare_proxy_0; export HTTP_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export HTTPS_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export FTP_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export TELNET_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export ALL_PROXY=$_bare_proxy_0_t://$_bare_proxy_0; export _bare_proxy=$_bare_proxy_0'
 # alias usetproxy="unset http_proxy; unset https_proxy; unset ftp_proxy; unset telnet_proxy; unset all_proxy; unset HTTP_PROXY; unset HTTPS_PROXY; unset FTP_PROXY; unset TELNET_PROXY; unset ALL_PROXY; unset _bare_proxyAAA"
 # alias aria2cf='aria2c --dht-file-path=$HOME/.aria2/dht.dat -x 8 -s 256 -k 1M --file-allocation=falloc'
 # alias aria2cd='aria2c --dht-file-path=$HOME/.aria2/dht.dat --conf-path=/Users/sam0230/.aria2/aria2cd.conf'
@@ -64,12 +64,12 @@
 # 	unset PKG_CONFIG_PATH MANPATH CXXFLAGS LDFLAGS CPPFLAGS INFOPATH CFLAGS
 # }
 # lnxsh() {
-# 	if tcping -qu 150000 192.168.247.164 222; then
-# 		ssh -p 222 sam0230@192.168.247.164 "$@"
+# 	if tcping -qu 150000 $lnxaddr 222; then
+# 		ssh -p 222 sam0230@$lnxaddr "$@"
 # 	elif tcping -qu 150000 192.168.2.253 222; then
 # 		ssh -p 222 sam0230@192.168.2.253 "$@"
-# 	elif tcping -qu 500000 192.168.247.164 222; then
-# 		ssh -p 222 sam0230@192.168.247.164 "$@"
+# 	elif tcping -qu 500000 $lnxaddr 222; then
+# 		ssh -p 222 sam0230@$lnxaddr "$@"
 # 	elif tcping -qu 500000 192.168.2.253 222; then
 # 		ssh -p 222 sam0230@192.168.2.253 "$@"
 # 	else
@@ -79,12 +79,12 @@
 # lnxpull() {
 # 	__OLDIFS_bn22s__="$IFS"
 # 	IFS=$'\n'
-# 	if tcping -qu 80000 192.168.247.164 222; then
-# 		filelist=($(printf "sam0230@192.168.247.164%s\n" "${@: 1:$#-1}"))
+# 	if tcping -qu 80000 $lnxaddr 222; then
+# 		filelist=($(printf "sam0230@$lnxaddr%s\n" "${@: 1:$#-1}"))
 # 	elif tcping -qu 150000 192.168.2.253 222; then
 # 		filelist=($(printf "sam0230@192.168.2.253%s\n" "${@: 1:$#-1}"))
-# 	elif tcping -qu 500000 192.168.247.164 222; then
-# 		filelist=($(printf "sam0230@192.168.247.164%s\n" "${@: 1:$#-1}"))
+# 	elif tcping -qu 500000 $lnxaddr 222; then
+# 		filelist=($(printf "sam0230@$lnxaddr%s\n" "${@: 1:$#-1}"))
 # 	elif tcping -qu 500000 192.168.2.253 222; then
 # 		filelist=($(printf "sam0230@192.168.2.253%s\n" "${@: 1:$#-1}"))
 # 	else
@@ -96,12 +96,12 @@
 # 	scp -r -P 222 "${filelist[@]}" "${@: -1}"
 # }
 # lnxpush() {
-# 	if tcping -qu 80000 192.168.247.164 222; then
-# 		target="sam0230@192.168.247.164"
+# 	if tcping -qu 80000 $lnxaddr 222; then
+# 		target="sam0230@$lnxaddr"
 # 	elif tcping -qu 150000 192.168.2.253 222; then
 # 		target="sam0230@192.168.2.253"
-# 	elif tcping -qu 500000 192.168.247.164 222; then
-# 		target="sam0230@192.168.247.164"
+# 	elif tcping -qu 500000 $lnxaddr 222; then
+# 		target="sam0230@$lnxaddr"
 # 	elif tcping -qu 500000 192.168.2.253 222; then
 # 		target="sam0230@192.168.2.253"
 # 	else
@@ -110,6 +110,6 @@
 # 	fi
 # 	scp -r -P 222 "${@: 1:$#-1}" "$target${@: -1}"
 # }
-# exeof() {
-# 	lsof -p $1 | grep -Em 1 "$(id -nru)"'[ \t]+txt[ \t]+REG[ \t]' | sed -E 's/^([^ \t]+[ \t]+){8}//'
-# }
+exeof() {
+	lsof -p $1 | grep -Em 1 "$(id -nru)"'[ \t]+txt[ \t]+REG[ \t]' | sed -E 's/^([^ \t]+[ \t]+){8}//'
+}

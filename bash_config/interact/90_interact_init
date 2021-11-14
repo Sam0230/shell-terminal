@@ -9,7 +9,7 @@
 [ "$(sh --help | grep BusyBox)" != "" ] && shopt() { :; };
 
 # enhanced command history, session & restoration support. useful with supported terminal emulators like Apple Terminal. Manual restoring is also supported.
-# Currently only history, variables, functions, aliases and shell level restoration is supported. Trap restoration is work-in-progress and will be added soon.
+# Currently only history, variables, functions, aliases, traps, completion and shell level restoration is supported. Traps restoration is still work-in-progress.
 
 # disable Apple Terminal's built-in shell session support
 touch "$HOME/.bash_sessions_disable"
@@ -37,6 +37,9 @@ __BASH_SAVE_SHELL_SESSION() {
 	history -a "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_new"
 	declare -p >"$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/env"
 	declare -f >>"$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/env"
+	alias -p >"$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/aliases"
+	complete -p >"$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/completion"
+	trap -p >"$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/traps"
 	alias -p >"$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/aliases"
 	pwd >"$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/cwd"
 }
@@ -77,28 +80,36 @@ if test -e "$__SHELL_SESSION_DIR/$__SHELL_PARENT_SESSION_ID/sighup"; then
 	rm "$__SHELL_SESSION_DIR/$__SHELL_PARENT_SESSION_ID/sighup"
 fi
 if test -e "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID"; then
-	if test -e "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_parent"; then
-		history -r "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_parent"
-	fi
-	if test -e "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_parent_new"; then
-		history -r "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_parent_new"
-	fi
-	if test -e "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history"; then
-		history -r "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history"
-	fi
-	history -a /dev/null
-	if test -e "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_new"; then
-		history -r "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_new"
-		rm "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_new"
-	fi
+	IFS=$' \t\n'
+	trap DEBUG
+	trap EXIT
+	trap RETURN
+	for i in $(trap -l); do
+		trap "$i" 2>/dev/null
+	done
+	complete -r
+	IFS=$'\n'
+	unalias $(compgen -a)
+	alias __SHELL_SESSION_DIR="$__SHELL_SESSION_DIR"
+	alias __SHELL_SESSION_ID="$__SHELL_SESSION_ID"
+	unset $(compgen -v) $(compgen -A function) IFS 2>/dev/null
+	IFS=$' \t\n'
+	setenvcmd="$(alias -p)"
+	alias alias="declare -g"
+	eval "$setenvcmd"
+	unset setenvcmd
+	unalias alias __SHELL_SESSION_DIR __SHELL_SESSION_ID
 	if test -e "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/env"; then
 		alias declare='declare -g'
 		source "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/env" 2>/dev/null
 		unalias declare
-		source "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/aliases" 2>/dev/null
 	fi
+	__BASH_HIST_LOADED=0
 	if test -e "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/aliases"; then
 		source "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/aliases" 2>/dev/null
+	fi
+	if test -e "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/completion"; then
+		source "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/completion" 2>/dev/null
 	fi
 	if test -e "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/cwd"; then
 		if ! cd "$(cat "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/cwd")" 2>/dev/null; then
@@ -107,32 +118,46 @@ if test -e "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID"; then
 			cd "$(pwd)"
 		fi
 	fi
+	if test -e "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/traps"; then
+		source "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/traps" 2>/dev/null
+	fi
 	if test -e "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/child"; then
 		__SHELL_SESSION_ID="$(tail -n 1 "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/child")" bash
 	fi
 	__BASH_SAVE_SHELL_SESSION
+	declare -g ___BASHCFG_BREAK___=1
 	return
 fi
 mkdir -p "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID"
 if test "$__SHELL_PARENT_SESSION_ID"; then
-	printf "%s" "$0" "$__SHELL_PARENT_SESSION_ID" >"$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/parent"
+	printf "%s" "$__SHELL_PARENT_SESSION_ID" >"$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/parent"
 	if test -d "$__SHELL_SESSION_DIR/$__SHELL_PARENT_SESSION_ID"; then
 		printf "%s" "$0" "$__SHELL_SESSION_ID" >"$__SHELL_SESSION_DIR/$__SHELL_PARENT_SESSION_ID/child"
 	fi
+	touch "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_parent" "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_parent_new"
 	if test -e "$__SHELL_SESSION_DIR/$__SHELL_PARENT_SESSION_ID/history"; then
 		cp "$__SHELL_SESSION_DIR/$__SHELL_PARENT_SESSION_ID/history" "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_parent"
-		history -r "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_parent"
 	fi
 	if test -e "$__SHELL_SESSION_DIR/$__SHELL_PARENT_SESSION_ID/history_new"; then
 		cp "$__SHELL_SESSION_DIR/$__SHELL_PARENT_SESSION_ID/history_new" "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_parent_new"
-		history -r "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_parent_new"
 	fi
-	history -a /dev/null
 fi
+export __SHELL_CURRENT_PARENT_SESSION_ID="$__SHELL_PARENT_SESSION_ID"
 export __SHELL_PARENT_SESSION_ID="$__SHELL_SESSION_ID"
 __SHELL_CURRENT_SESSION_ID="$__SHELL_SESSION_ID"
 lsof -p $$ | grep -Em 1 "$(id -nru)"'[ \t]+txt[ \t]+REG[ \t]' | sed -E 's/^([^ \t]+[ \t]+){8}//' >"$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/executable"
 printf "%s" "$0" >"$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/arg0"
+touch "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history" "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_new"
+__BASH_LOAD_HIST() {
+	[ "$__BASH_HIST_LOADED" == 1 ] && return
+	__BASH_HIST_LOADED=1
+	history -r "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_parent"
+	history -r "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_parent_new"
+	history -r "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history"
+	history -a /dev/null
+	history -r "$__SHELL_SESSION_DIR/$__SHELL_SESSION_ID/history_new"
+}
+PROMPT_COMMAND="__BASH_LOAD_HIST${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
 __BASH_SAVE_SHELL_SESSION
 
 # don't put duplicate lines in the history. See bash(1) for more options
